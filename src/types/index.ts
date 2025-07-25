@@ -111,7 +111,7 @@ export interface DeribitOrderbookResponse {
 export interface WebSocketMessage {
   venue: Venue;
   type: 'orderbook' | 'error' | 'connected' | 'disconnected';
-  data?: any;
+  data?: unknown;
   error?: string;
 }
 

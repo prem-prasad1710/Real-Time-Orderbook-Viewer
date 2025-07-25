@@ -16,7 +16,7 @@ export class DeribitService extends BaseExchangeAPI {
     const url = `${this.baseUrl}/api/v2/public/get_order_book?instrument_name=${symbol}&depth=15`;
     
     try {
-      const response: DeribitOrderbookResponse = await this.fetchJSON(url);
+      const response = await this.fetchJSON(url) as DeribitOrderbookResponse;
       
       if (!response.result) {
         throw new Error('Deribit API error: No result data');
@@ -120,39 +120,43 @@ export class DeribitService extends BaseExchangeAPI {
     );
   }
 
-  private handleWebSocketMessage(data: any): void {
+  private handleWebSocketMessage(data: unknown): void {
     try {
+      const message = data as Record<string, unknown>;
       // Handle subscription confirmation
-      if (data.result && data.method === 'public/subscribe') {
-        console.log('Deribit subscription confirmed:', data);
+      if (message.result && message.method === 'public/subscribe') {
+        console.log('Deribit subscription confirmed:', message);
         return;
       }
 
       // Handle orderbook updates
-      if (data.params?.channel?.startsWith('book.')) {
-        const channelParts = data.params.channel.split('.');
-        const symbol = channelParts[1];
-        const callback = this.callbacks.get(symbol);
-        
-        if (callback && data.params.data) {
-          const bookData = data.params.data;
-          const bids = bookData.bids.map(([price, quantity]: number[]) => 
-            this.normalizeOrderbookLevel(price.toString(), quantity.toString())
-          );
-          const asks = bookData.asks.map(([price, quantity]: number[]) => 
-            this.normalizeOrderbookLevel(price.toString(), quantity.toString())
-          );
+      if (message.params && typeof message.params === 'object' && message.params !== null) {
+        const params = message.params as Record<string, unknown>;
+        if (params.channel && typeof params.channel === 'string' && params.channel.startsWith('book.')) {
+          const channelParts = params.channel.split('.');
+          const symbol = channelParts[1];
+          const callback = this.callbacks.get(symbol);
+          
+          if (callback && params.data) {
+            const bookData = params.data as Record<string, unknown>;
+            const bids = (bookData.bids as number[][]).map(([price, quantity]: number[]) => 
+              this.normalizeOrderbookLevel(price.toString(), quantity.toString())
+            );
+            const asks = (bookData.asks as number[][]).map(([price, quantity]: number[]) => 
+              this.normalizeOrderbookLevel(price.toString(), quantity.toString())
+            );
 
-          const orderbook: Orderbook = {
-            symbol,
-            venue: 'Deribit',
-            timestamp: bookData.timestamp,
-            bids: this.calculateTotals(bids),
-            asks: this.calculateTotals(asks),
-            sequence: bookData.change_id
-          };
+            const orderbook: Orderbook = {
+              symbol,
+              venue: 'Deribit',
+              timestamp: bookData.timestamp as number,
+              bids: this.calculateTotals(bids),
+              asks: this.calculateTotals(asks),
+              sequence: bookData.change_id as number
+            };
 
-          callback(orderbook);
+            callback(orderbook);
+          }
         }
       }
     } catch (error) {

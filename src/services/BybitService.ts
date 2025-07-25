@@ -15,7 +15,7 @@ export class BybitService extends BaseExchangeAPI {
     const url = `${this.baseUrl}/v5/market/orderbook?category=spot&symbol=${symbol}&limit=25`;
     
     try {
-      const response: BybitOrderbookResponse = await this.fetchJSON(url);
+      const response = await this.fetchJSON(url) as BybitOrderbookResponse;
       
       if (response.retCode !== 0 || !response.result) {
         throw new Error(`Bybit API error: ${response.retMsg}`);
@@ -112,33 +112,34 @@ export class BybitService extends BaseExchangeAPI {
     );
   }
 
-  private handleWebSocketMessage(data: any): void {
+  private handleWebSocketMessage(data: unknown): void {
     try {
-      if (data.success && data.op === 'subscribe') {
-        console.log('Bybit subscription confirmed:', data);
+      const message = data as Record<string, unknown>;
+      if (message.success && message.op === 'subscribe') {
+        console.log('Bybit subscription confirmed:', message);
         return;
       }
 
-      if (data.topic?.startsWith('orderbook') && data.data) {
-        const symbol = data.topic.split('.')[2]; // Extract symbol from topic
+      if (message.topic && typeof message.topic === 'string' && message.topic.startsWith('orderbook') && message.data) {
+        const symbol = message.topic.split('.')[2]; // Extract symbol from topic
         const callback = this.callbacks.get(symbol);
         
         if (callback) {
-          const bookData = data.data;
-          const bids = bookData.b.map(([price, quantity]: string[]) => 
+          const bookData = message.data as Record<string, unknown>;
+          const bids = (bookData.b as string[][]).map(([price, quantity]: string[]) => 
             this.normalizeOrderbookLevel(price, quantity)
           );
-          const asks = bookData.a.map(([price, quantity]: string[]) => 
+          const asks = (bookData.a as string[][]).map(([price, quantity]: string[]) => 
             this.normalizeOrderbookLevel(price, quantity)
           );
 
           const orderbook: Orderbook = {
             symbol,
             venue: 'Bybit',
-            timestamp: data.ts,
+            timestamp: message.ts as number,
             bids: this.calculateTotals(bids),
             asks: this.calculateTotals(asks),
-            sequence: bookData.u
+            sequence: (bookData.u as number)
           };
 
           callback(orderbook);

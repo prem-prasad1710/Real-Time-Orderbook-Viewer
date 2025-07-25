@@ -34,7 +34,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
     return (
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-3 shadow-lg">
         <p className="font-medium text-gray-900 dark:text-white">
-          Price: <span className="font-mono">${formatPrice(data.price, 'BTC-USDT')}</span>
+          Price: <span className="font-mono">${formatPrice(data.price)}</span>
         </p>
         <p className="text-gray-600 dark:text-gray-400">
           Volume: <span className="font-mono">{formatVolume(data.volume)}</span>
@@ -133,7 +133,7 @@ const MarketDepthChart: React.FC<MarketDepthChartProps> = ({
               type="number"
               scale="linear"
               domain={['dataMin', 'dataMax']}
-              tickFormatter={(value) => formatPrice(value, orderbook.symbol)}
+              tickFormatter={(value) => formatPrice(value)}
               fontSize={12}
             />
             <YAxis
@@ -201,7 +201,7 @@ const MarketDepthChart: React.FC<MarketDepthChartProps> = ({
         </div>
         <div>
           <span>Mid Price:</span>
-          <span className="ml-1 font-mono">{formatPrice(midPrice, orderbook.symbol)}</span>
+          <span className="ml-1 font-mono">{formatPrice(midPrice)}</span>
         </div>
       </div>
     </div>

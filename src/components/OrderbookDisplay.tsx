@@ -56,7 +56,7 @@ const OrderLevelRow: React.FC<OrderLevelRowProps> = ({
       {/* Content */}
       <div className="relative z-10 flex items-center justify-between w-full">
         <span className={`font-mono ${isAsk ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
-          {formatPrice(level.price, symbol)}
+          {formatPrice(level.price)}
         </span>
         <span className="text-gray-600 dark:text-gray-400">
           {formatQuantity(level.quantity)}
@@ -156,7 +156,7 @@ const OrderbookDisplay: React.FC<OrderbookDisplayProps> = ({
         <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
           {spreadInfo && (
             <div>
-              Spread: <span className="font-mono">{formatPrice(spreadInfo.absolute, orderbook.symbol)}</span>
+              Spread: <span className="font-mono">{formatPrice(spreadInfo.absolute)}</span>
               <span className="ml-1">({spreadInfo.percentage.toFixed(3)}%)</span>
             </div>
           )}
@@ -192,7 +192,7 @@ const OrderbookDisplay: React.FC<OrderbookDisplayProps> = ({
         {spreadInfo && (
           <div className="flex items-center justify-center py-2 bg-gray-100 dark:bg-gray-800 border-y border-gray-200 dark:border-gray-600">
             <span className="text-xs text-gray-600 dark:text-gray-400">
-              ← Spread: {formatPrice(spreadInfo.absolute, orderbook.symbol)} →
+              ← Spread: {formatPrice(spreadInfo.absolute)} →
             </span>
           </div>
         )}
@@ -215,12 +215,12 @@ const OrderbookDisplay: React.FC<OrderbookDisplayProps> = ({
       <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 text-xs text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
         <div>
           Best Bid: <span className="font-mono text-green-600 dark:text-green-400">
-            {formatPrice(orderbook.bids[0]?.price || 0, orderbook.symbol)}
+            {formatPrice(orderbook.bids[0]?.price || 0)}
           </span>
         </div>
         <div>
           Best Ask: <span className="font-mono text-red-600 dark:text-red-400">
-            {formatPrice(orderbook.asks[0]?.price || 0, orderbook.symbol)}
+            {formatPrice(orderbook.asks[0]?.price || 0)}
           </span>
         </div>
         <div>

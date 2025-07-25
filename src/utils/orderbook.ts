@@ -87,7 +87,7 @@ export function calculateOrderbookImbalance(
 /**
  * Format price with appropriate decimal places
  */
-export function formatPrice(price: number, symbol: string): string {
+export function formatPrice(price: number): string {
   // Determine decimal places based on price magnitude
   let decimals = 2;
   if (price > 1000) decimals = 0;
@@ -166,7 +166,7 @@ export function validateSymbol(symbol: string, venue: string): boolean {
 /**
  * Convert symbol between venue formats
  */
-export function convertSymbol(symbol: string, fromVenue: string, toVenue: string): string {
+export function convertSymbol(symbol: string): string {
   // Simplified conversion - in practice, this would be more comprehensive
   const baseSymbolMap: Record<string, string> = {
     'BTC-USDT': 'BTCUSDT',
@@ -210,7 +210,7 @@ export function calculateSpread(bids: OrderbookLevel[], asks: OrderbookLevel[]):
 /**
  * Debounce function for API calls
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -225,7 +225,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function for frequent updates
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {

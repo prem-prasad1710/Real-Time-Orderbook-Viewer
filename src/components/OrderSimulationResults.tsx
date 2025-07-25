@@ -155,7 +155,7 @@ const OrderSimulationResults: React.FC<OrderSimulationResultsProps> = ({
           {simulation.price && (
             <div>
               <span className="text-gray-600 dark:text-gray-400">Price:</span>
-              <span className="ml-2 font-mono">{formatPrice(simulation.price, simulation.symbol)}</span>
+              <span className="ml-2 font-mono">{formatPrice(simulation.price)}</span>
             </div>
           )}
           <div>
@@ -200,7 +200,7 @@ const OrderSimulationResults: React.FC<OrderSimulationResultsProps> = ({
           />
           <MetricCard
             title="Avg Fill Price"
-            value={formatPrice(impactMetrics.averageFillPrice, simulation.symbol)}
+            value={formatPrice(impactMetrics.averageFillPrice)}
             color="blue"
             icon="💰"
           />
@@ -253,7 +253,7 @@ const OrderSimulationResults: React.FC<OrderSimulationResultsProps> = ({
                   const fillPercentage = (level.quantity / (level.total || level.quantity)) * 100;
                   return (
                     <tr key={index} className="border-b border-gray-100 dark:border-gray-800 last:border-b-0">
-                      <td className="py-2 font-mono">{formatPrice(level.price, simulation.symbol)}</td>
+                      <td className="py-2 font-mono">{formatPrice(level.price)}</td>
                       <td className="py-2 text-right font-mono">{formatQuantity(level.quantity)}</td>
                       <td className="py-2 text-right font-mono text-gray-600 dark:text-gray-400">
                         {formatQuantity(level.total || level.quantity)}
