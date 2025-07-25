@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { OrderSimulationResult } from '@/types';
-import { formatPrice, formatQuantity, formatVolume } from '@/utils/orderbook';
+import { formatPrice, formatQuantity } from '@/utils/orderbook';
 
 interface OrderSimulationResultsProps {
   result: OrderSimulationResult | null;

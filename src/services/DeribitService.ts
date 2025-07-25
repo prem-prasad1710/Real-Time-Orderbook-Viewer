@@ -1,6 +1,6 @@
 // Deribit API Service Implementation
 
-import { Orderbook, OrderbookLevel, DeribitOrderbookResponse } from '@/types';
+import { Orderbook, DeribitOrderbookResponse } from '@/types';
 import BaseExchangeAPI from './BaseExchangeAPI';
 
 export class DeribitService extends BaseExchangeAPI {

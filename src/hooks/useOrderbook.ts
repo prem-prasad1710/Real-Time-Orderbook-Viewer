@@ -309,7 +309,7 @@ export function useOrderForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const updateField = useCallback((field: keyof OrderSimulation, value: any) => {
+  const updateField = useCallback((field: keyof OrderSimulation, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
     // Clear error for this field

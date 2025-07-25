@@ -1,6 +1,6 @@
 // Base API service for cryptocurrency exchanges
 
-import { Orderbook, OrderbookLevel, Venue, WebSocketConfig } from '@/types';
+import { Orderbook, OrderbookLevel, Venue } from '@/types';
 
 export abstract class BaseExchangeAPI {
   protected venue: Venue;
@@ -23,7 +23,7 @@ export abstract class BaseExchangeAPI {
   abstract unsubscribeFromOrderbook(symbol: string): void;
   abstract getSupportedSymbols(): string[];
 
-  protected createWebSocket(url: string, onMessage: (data: any) => void, onError?: (error: Event) => void): WebSocket {
+  protected createWebSocket(url: string, onMessage: (data: unknown) => void, onError?: (error: Event) => void): WebSocket {
     const ws = new WebSocket(url);
     
     ws.onopen = () => {
@@ -53,7 +53,7 @@ export abstract class BaseExchangeAPI {
     return ws;
   }
 
-  private scheduleReconnect(url: string, onMessage: (data: any) => void, onError?: (error: Event) => void): void {
+  private scheduleReconnect(url: string, onMessage: (data: unknown) => void, onError?: (error: Event) => void): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectTimer = setTimeout(() => {
         console.log(`Attempting to reconnect to ${this.venue} (${this.reconnectAttempts + 1}/${this.maxReconnectAttempts})`);
@@ -63,7 +63,7 @@ export abstract class BaseExchangeAPI {
     }
   }
 
-  protected async fetchJSON(url: string): Promise<any> {
+  protected async fetchJSON(url: string): Promise<unknown> {
     try {
       const response = await fetch(url);
       if (!response.ok) {

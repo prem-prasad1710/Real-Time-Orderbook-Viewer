@@ -1,6 +1,6 @@
 // Bybit API Service Implementation
 
-import { Orderbook, OrderbookLevel, BybitOrderbookResponse } from '@/types';
+import { Orderbook, BybitOrderbookResponse } from '@/types';
 import BaseExchangeAPI from './BaseExchangeAPI';
 
 export class BybitService extends BaseExchangeAPI {

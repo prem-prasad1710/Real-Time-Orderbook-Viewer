@@ -17,11 +17,18 @@ interface MarketDepthChartProps {
 
 interface TooltipProps {
   active?: boolean;
-  payload?: any[];
+  payload?: Array<{
+    payload: {
+      price: number;
+      volume: number;
+      cumulative: number;
+      side: 'bid' | 'ask';
+    };
+  }>;
   label?: string;
 }
 
-const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
+const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -96,10 +103,6 @@ const MarketDepthChart: React.FC<MarketDepthChartProps> = ({
   }
 
   const { bidData, askData, midPrice } = chartData;
-  const maxCumulative = Math.max(
-    ...bidData.map(d => d.cumulative),
-    ...askData.map(d => d.cumulative)
-  );
 
   return (
     <div className={`bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 ${className}`}>

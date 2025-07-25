@@ -1,6 +1,6 @@
 // Exchange Manager Service - Coordinates all venue APIs
 
-import { Venue, Orderbook, OrderbookLevel, OrderSimulation, OrderSimulationResult, OrderImpactMetrics, SimulatedOrderPosition } from '@/types';
+import { Venue, Orderbook, OrderSimulation, OrderSimulationResult, OrderImpactMetrics, SimulatedOrderPosition } from '@/types';
 import MockDataService from './MockDataService';
 
 export class ExchangeManager {

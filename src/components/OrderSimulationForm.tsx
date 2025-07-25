@@ -36,7 +36,7 @@ const OrderSimulationForm: React.FC<OrderSimulationFormProps> = ({
   const supportedSymbols = useSupportedSymbols();
 
   // Update form data
-  const updateField = (field: keyof OrderSimulation, value: any) => {
+  const updateField = (field: keyof OrderSimulation, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
     // Clear error for this field
@@ -86,7 +86,7 @@ const OrderSimulationForm: React.FC<OrderSimulationFormProps> = ({
     if (venueSymbols.length > 0 && !venueSymbols.includes(formData.symbol)) {
       updateField('symbol', venueSymbols[0]);
     }
-  }, [formData.venue, supportedSymbols]);
+  }, [formData.venue, formData.symbol, supportedSymbols, updateField]);
 
   const venues: Venue[] = ['OKX', 'Bybit', 'Deribit'];
   const orderTypes: OrderType[] = ['Market', 'Limit'];
